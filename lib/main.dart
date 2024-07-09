@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_projects/home.dart';
-
-import 'NourScreen.dart';
+import 'package:flutter_projects/HomeScreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
         useMaterial3: true,
       ),
       home: const HomeLayout() ,
