@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_projects/ArchivedTasks.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_projects/DoneTasks.dart';
 import 'package:flutter_projects/NewTasks.dart';
 import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart';
+import 'constants.dart';
 
 class HomeLayout extends StatefulWidget {
   const HomeLayout({super.key});
@@ -52,7 +54,9 @@ class _HomeLayoutState extends State<HomeLayout> {
           style: const TextStyle(color: Colors.white),
         ),
       ),
-      body: screens[currentIndex],
+      body: tasks.isEmpty
+          ? const Center(child: CircularProgressIndicator())
+          : screens[currentIndex],
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           if (isBottomSheetShown) {
@@ -62,10 +66,16 @@ class _HomeLayoutState extends State<HomeLayout> {
                       time: timeController.text,
                       date: dateController.text)
                   .then((value) {
-                Navigator.pop(context);
-                isBottomSheetShown = false;
-                setState(() {
-                  fabIcon = Icons.edit;
+                getDataFromDatabase(database).then((value) {
+                  Navigator.pop(context);
+                  setState(() {
+                    isBottomSheetShown = false;
+                    fabIcon = Icons.edit;
+                    tasks = value;
+                    if (kDebugMode) {
+                      print(tasks);
+                    }
+                  });
                 });
               });
             }
@@ -215,6 +225,12 @@ class _HomeLayoutState extends State<HomeLayout> {
       },
       onOpen: (database) {
         if (kDebugMode) {
+          getDataFromDatabase(database).then((value) {
+            tasks = value;
+            if (kDebugMode) {
+              print(tasks);
+            }
+          });
           print('database opened');
         }
       },
@@ -249,5 +265,9 @@ class _HomeLayoutState extends State<HomeLayout> {
       }
       return -1; // Or throw an exception
     }
+  }
+
+  Future<List<Map>> getDataFromDatabase(database) async {
+    return await database.rawQuery('Select * from Task');
   }
 }
