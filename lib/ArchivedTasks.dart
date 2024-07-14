@@ -1,10 +1,10 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class ArchivedTasks extends StatelessWidget {
   const ArchivedTasks({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Text('Archived Tasks');
+    return const Center(child: Text('Archived Tasks'));
   }
 }

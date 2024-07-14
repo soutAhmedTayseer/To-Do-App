@@ -1,1 +1,1 @@
-List<Map> tasks = [];
+const List<Map> tasks = [];
