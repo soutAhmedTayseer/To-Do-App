@@ -14,10 +14,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.cyan),
+        scaffoldBackgroundColor: Colors.white,
         useMaterial3: true,
       ),
-      home: HomeLayout() ,
+      home: const HomeLayout() ,
     );
   }
 }

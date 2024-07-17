@@ -1,4 +1,3 @@
-import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sqflite/sqflite.dart';
@@ -81,6 +80,34 @@ class AppCubit extends Cubit<AppStates> {
           print('Error inserting new record: ${error.toString()}');
         }
       });
+    });
+  }
+
+  Future<void> updateTaskStatus({required int id, required String status}) async {
+    await database!.rawUpdate(
+      'UPDATE Task SET status = ? WHERE id = ?',
+      [status, id],
+    ).then((value) {
+      getDataFromDatabase(database);  // Refresh the task list
+      emit(AppUpdateDatabaseState());
+    }).catchError((error) {
+      if (kDebugMode) {
+        print('Error updating task status: ${error.toString()}');
+      }
+    });
+  }
+
+  Future<void> deleteTask({required int id}) async {
+    await database!.rawDelete(
+      'DELETE FROM Task WHERE id = ?',
+      [id],
+    ).then((value) {
+      getDataFromDatabase(database);  // Refresh the task list
+      emit(AppDeleteDatabaseState());
+    }).catchError((error) {
+      if (kDebugMode) {
+        print('Error deleting task: ${error.toString()}');
+      }
     });
   }
 

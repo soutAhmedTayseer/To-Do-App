@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_projects/cubit.dart';
 import 'package:flutter_projects/states.dart';
 import 'components.dart';
+
 class NewTasks extends StatelessWidget {
   const NewTasks({super.key});
 

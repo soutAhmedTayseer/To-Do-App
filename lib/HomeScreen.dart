@@ -4,16 +4,29 @@ import 'package:flutter_projects/cubit.dart';
 import 'package:flutter_projects/states.dart';
 import 'package:intl/intl.dart';
 
-class HomeLayout extends StatelessWidget {
-  var scaffoldKey = GlobalKey<ScaffoldState>();
-  var formKey = GlobalKey<FormState>();
-  bool isBottomSheetShown = false;
-  IconData fabIcon = Icons.edit;
-  var titleController = TextEditingController();
-  var timeController = TextEditingController();
-  var dateController = TextEditingController();
 
-  HomeLayout({super.key});
+class HomeLayout extends StatefulWidget {
+
+  const HomeLayout({super.key});
+
+  @override
+  State<HomeLayout> createState() => _HomeLayoutState();
+}
+
+class _HomeLayoutState extends State<HomeLayout> {
+  var scaffoldKey = GlobalKey<ScaffoldState>();
+
+  var formKey = GlobalKey<FormState>();
+
+  bool isBottomSheetShown = false;
+
+  IconData fabIcon = Icons.edit;
+
+  var titleController = TextEditingController();
+
+  var timeController = TextEditingController();
+
+  var dateController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -26,15 +39,15 @@ class HomeLayout extends StatelessWidget {
           return Scaffold(
             key: scaffoldKey,
             appBar: AppBar(
-              backgroundColor: Colors.teal[500],
-              title: Text(
-                cubit.titles[cubit.currentIndex],
-                style: const TextStyle(color: Colors.white),
+              backgroundColor: Colors.cyan[200],
+              title: Center(
+                child: Text(
+                  cubit.titles[cubit.currentIndex],
+                  style: const TextStyle(color: Colors.black87,fontWeight: FontWeight.bold,fontSize: 30,),
+                ),
               ),
             ),
-            body: cubit.tasks.isEmpty
-                ? const Center(child: CircularProgressIndicator())
-                : cubit.screens[cubit.currentIndex],
+            body: cubit.screens[cubit.currentIndex],
             floatingActionButton: FloatingActionButton(
               onPressed: () {
                 if (isBottomSheetShown) {
