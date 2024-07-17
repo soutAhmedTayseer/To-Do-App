@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_projects/ArchivedTasks.dart';
-import 'package:flutter_projects/DoneTasks.dart';
-import 'package:flutter_projects/NewTasks.dart';
 import 'package:flutter_projects/cubit.dart';
 import 'package:flutter_projects/states.dart';
 import 'package:intl/intl.dart';
@@ -43,9 +40,9 @@ class HomeLayout extends StatelessWidget {
                 if (isBottomSheetShown) {
                   if (formKey.currentState!.validate()) {
                     cubit.insertToDatabase(
-                        title: titleController.text,
-                        time: timeController.text,
-                        date: dateController.text
+                      title: titleController.text,
+                      time: timeController.text,
+                      date: dateController.text,
                     ).then((value) {
                       Navigator.pop(context);
                       isBottomSheetShown = false;
@@ -82,10 +79,11 @@ class HomeLayout extends StatelessWidget {
                               controller: timeController,
                               onTap: () {
                                 showTimePicker(
-                                    context: context,
-                                    initialTime: TimeOfDay.now()
+                                  context: context,
+                                  initialTime: TimeOfDay.now(),
                                 ).then((value) {
-                                  timeController.text = (value?.format(context)).toString();
+                                  timeController.text =
+                                      (value?.format(context)).toString();
                                 });
                               },
                               validator: (value) {
@@ -105,12 +103,13 @@ class HomeLayout extends StatelessWidget {
                               controller: dateController,
                               onTap: () {
                                 showDatePicker(
-                                    context: context,
-                                    initialDate: DateTime.now(),
-                                    firstDate: DateTime.now(),
-                                    lastDate: DateTime.parse('2025-01-08')
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime.now(),
+                                  lastDate: DateTime.parse('2025-01-08'),
                                 ).then((value) {
-                                  dateController.text = DateFormat.yMMMd().format(value!);
+                                  dateController.text =
+                                      DateFormat.yMMMd().format(value!);
                                 });
                               },
                               validator: (value) {
@@ -149,12 +148,12 @@ class HomeLayout extends StatelessWidget {
               items: const [
                 BottomNavigationBarItem(icon: Icon(Icons.menu), label: 'Tasks'),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.check_circle_outline_outlined),
-                    label: 'Done'
+                  icon: Icon(Icons.check_circle_outline_outlined),
+                  label: 'Done',
                 ),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.archive_outlined),
-                    label: 'Archived'
+                  icon: Icon(Icons.archive_outlined),
+                  label: 'Archived',
                 ),
               ],
             ),

@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter/foundation.dart';
@@ -13,7 +13,7 @@ class AppCubit extends Cubit<AppStates> {
 
   static AppCubit get(context) => BlocProvider.of(context);
 
-  late Database database;
+  Database? database;
   List<Map> tasks = [];
 
   List<String> titles = [
@@ -40,9 +40,6 @@ class AppCubit extends Cubit<AppStates> {
       'Task.db',
       version: 1,
       onCreate: (database, version) {
-        if (kDebugMode) {
-          print('database created');
-        }
         database.execute(
           'CREATE TABLE Task(id INTEGER PRIMARY KEY, title TEXT, time TEXT, date TEXT, status TEXT)',
         ).then((value) {
@@ -56,16 +53,7 @@ class AppCubit extends Cubit<AppStates> {
         });
       },
       onOpen: (database) {
-        getDataFromDatabase(database).then((value) {
-          tasks = value;
-          emit(AppGetDatabaseState());
-          if (kDebugMode) {
-            print(tasks);
-          }
-        });
-        if (kDebugMode) {
-          print('database opened');
-        }
+        getDataFromDatabase(database);
       },
     ).then((value) {
       database = value;
@@ -78,7 +66,7 @@ class AppCubit extends Cubit<AppStates> {
     required String time,
     required String date,
   }) async {
-    return await database.transaction((txn) async {
+    await database!.transaction((txn) async {
       await txn.rawInsert(
         'INSERT INTO Task(title, time, date, status) VALUES(?, ?, ?, ?)',
         [title, time, date, 'new'],
@@ -96,7 +84,14 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
-  Future<List<Map>> getDataFromDatabase(database) async {
-    return await database.rawQuery('SELECT * FROM Task');
+  Future<void> getDataFromDatabase(database) async {
+    database!.rawQuery('SELECT * FROM Task').then((value) {
+      tasks = value;
+      emit(AppGetDatabaseState());
+    }).catchError((error) {
+      if (kDebugMode) {
+        print('Error getting data from database: ${error.toString()}');
+      }
+    });
   }
 }

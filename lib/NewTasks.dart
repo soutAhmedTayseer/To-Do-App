@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_projects/cubit.dart';
 import 'package:flutter_projects/states.dart';
-
+import 'components.dart';
 class NewTasks extends StatelessWidget {
   const NewTasks({super.key});
 
@@ -11,9 +11,12 @@ class NewTasks extends StatelessWidget {
     return BlocConsumer<AppCubit, AppStates>(
       listener: (context, state) {},
       builder: (context, state) {
-        var tasks = AppCubit.get(context).tasks;
+        var tasks = AppCubit.get(context).tasks
+            .where((task) => task['status'] == 'new')
+            .toList();
+
         return ListView.separated(
-          itemBuilder: (context, index) => buildTaskItem(tasks[index]),
+          itemBuilder: (context, index) => buildTaskItem(context, tasks[index]),
           separatorBuilder: (context, index) => Container(
             width: double.infinity,
             height: 2,
@@ -25,35 +28,3 @@ class NewTasks extends StatelessWidget {
     );
   }
 }
-
-Widget buildTaskItem(Map model) => Padding(
-  padding: const EdgeInsets.all(20.0),
-  child: Row(
-    children: [
-      CircleAvatar(
-        radius: 40,
-        child: Text('${model['time']}'),
-      ),
-      const SizedBox(
-        width: 20,
-      ),
-      Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '${model['title']}',
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-          ),
-          Text(
-            '${model['date']}',
-            style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-                color: Colors.grey),
-          ),
-        ],
-      )
-    ],
-  ),
-);
