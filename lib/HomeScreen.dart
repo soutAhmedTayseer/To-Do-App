@@ -39,7 +39,7 @@ class _HomeLayoutState extends State<HomeLayout> {
           return Scaffold(
             key: scaffoldKey,
             appBar: AppBar(
-              backgroundColor: Colors.cyan[200],
+              backgroundColor: Colors.cyan,
               title: Center(
                 child: Text(
                   cubit.titles[cubit.currentIndex],

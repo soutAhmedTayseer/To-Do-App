@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_projects/HomeScreen.dart';
-
+import 'package:flutter_projects/SplashScreen.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -18,7 +17,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
         useMaterial3: true,
       ),
-      home: const HomeLayout() ,
+      home: const SplashScreen() ,
     );
   }
 }
